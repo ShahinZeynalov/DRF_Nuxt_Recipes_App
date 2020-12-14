@@ -41,12 +41,13 @@ export default {
   modules: [
     // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
-    '@nuxtjs/axios' // add this
+    '@nuxtjs/axios', // add this
+    '@nuxtjs/auth-next',
   ],
 
   // add this Axios object
   axios: {
-    baseURL: "http://localhost:8000/api"
+    baseURL: "http://localhost:8000/api/v1"
   },
   /*
   ** Build configuration
@@ -57,6 +58,36 @@ export default {
     */
     extend (config, ctx) {
     }
+  },
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          property: 'token',
+          required: true,
+          type: 'Token'
+        },
+        endpoints: {
+          login: {
+            url: '/login/',
+            method: 'post',
+            propertyName: 'auth_token',
+          },
+          logout: { url: '/logout/', method: 'post' },
+          user: {
+            url: '/user/',
+            method: 'get',
+          },
+        },
+        tokenType: 'Token',
+        tokenName: 'Authorization',
+      },
+
+    },
+    redirect: {
+      login: '/login',
+      home: '/',
+    },
   },
 
 
