@@ -9,14 +9,24 @@
       <div class="action-buttons">
         <nuxt-link :to="`/recipes/${recipe.id}/`" class="btn btn-sm btn-success"> View </nuxt-link>
         <nuxt-link :to="`/recipes/${recipe.id}/edit/`" class="btn btn-sm btn-primary"> Edit </nuxt-link>
-        <button @click="onDelete(recipe.id)"  class="btn btn-sm btn-danger">Delete</button>
+        <button @click="deleteRecipeMethod(recipe.id)"  class="btn btn-sm btn-danger">Delete</button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
-    props: ["recipe", "onDelete"]
+    props: ["recipe"],
+    methods: {
+    ...mapActions({
+      deleteRecipe: 'recipes/deleteRecipe',
+      fetchRecipes: 'recipes/fetchRecipes',
+    }),
+    deleteRecipeMethod(id) {
+      this.deleteRecipe(id)
+    }
+    }
 };
 </script>
 <style>

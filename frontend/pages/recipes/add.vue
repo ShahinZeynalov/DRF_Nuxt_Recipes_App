@@ -104,16 +104,20 @@
       },
       async submitRecipe() {
         const config = {
-          headers: { 'content-type': 'multipart/form-data' }
+          headers: {
+             'content-type': 'multipart/form-data' , 
+             'Authorization': this.$store.state.auth.authUser.data.token
+          }
         }
         let formData = new FormData()
         for (let data in this.recipe) {
           console.log(data)
           formData.append(data, this.recipe[data])
         }
-        console.log(formData)
+        console.log('-formdaaata', formData)
+        console.log('-config', config)
         try {
-          let response = await this.$axios.$post('/recipes/', formData, config)
+          let response = await this.$store.dispatch('recipes/addRecipe', {formData, config});
           this.$router.push('/recipes/')
         } catch (e) {
           alert(JSON.stringify(e.response.data))

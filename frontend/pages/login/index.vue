@@ -5,32 +5,29 @@
     <b-alert v-if="errorMessage" show variant="danger">
       {{ errorMessage }}
     </b-alert>
-    <b-alert v-if="$auth.$state.redirect" show>
+    <b-alert v-if="redirect" show>
       You have to login before accessing to
-      <strong>{{ $auth.$state.redirect }}</strong>
+      <strong>{{ redirect }}</strong>
     </b-alert>
     <b-row align-h="center" class="pt-4">
       <b-col md="4">
         <b-card bg-variant="light">
-          <busy-overlay />
+          <!-- <busy-overlay /> -->
           <form @keydown.enter="login">
             <b-form-group label="Email">
               <b-input
                 ref="email"
-                v-model="email"
+                v-model="formEmail"
                 placeholder="email"
               />
             </b-form-group>
 
             <b-form-group label="Password">
-              <b-input v-model="password" type="password" placeholder="123" />
+              <b-input v-model="formPassword" type="password" placeholder="123" />
             </b-form-group>
 
             <div class="text-center">
               <b-btn variant="primary" block @click="login"> Login </b-btn>
-              <b-btn variant="secondary" block @click="localRefresh">
-                Login with Refresh
-              </b-btn>
             </div>
           </form>
         </b-card>
@@ -62,6 +59,7 @@
               Login with oauth2
             </b-btn>
           </div>
+          {{ authData }}data
 
         </b-card>
       </b-col>
@@ -70,18 +68,23 @@
 </template>
 
 <script>
-import busyOverlay from '~/components/busy-overlay'
+// import busyOverlay from '~/components/busy-overlay'
+import { mapActions, mapState, mapGetters } from 'vuex'
+
 export default {
-  components: { busyOverlay },
-  middleware: ['auth'],
+  // components: { busyOverlay },
+  middleware: ['notAuth'],
   data() {
     return {
-      email: '',
-      password: '',
-      error: null
+      formEmail: 'user@example.com',
+      formPassword: 'string',
+      formError: null
     }
   },
   computed: {
+    ...mapState({
+      authData: state => state.auth.authUser
+    }),
     strategies: () => [
       { key: 'auth0', name: 'Auth0', color: '#ec5425' },
       { key: 'google', name: 'Google', color: '#4284f4' },
@@ -130,19 +133,23 @@ export default {
     //       console.log(this.error);
     //     })
     // },
+    ...mapActions({
+      loginAction: 'auth/login',
+    }),
     async login() {
+      console.log('logged in begins');
       try {
-        this.error = null
-        
-        let response = await this.$auth.loginWith('local', {
-        data: {
-            email: this.email,
-            password: this.password
-        }
+        await this.$store.dispatch('auth/login', {
+          email: this.formEmail,
+          password: this.formPassword
         })
-        console.log('----------', response)
-      } catch (err) {
-        console.log(err)
+        this.formUsername = ''
+        this.formPassword = ''
+        this.formError = null
+        this.$router.push('recipes')
+      } catch (e) {
+        console.log('login error', e.message);
+        this.formError = e.message
       }
     },
     async localRefresh() {

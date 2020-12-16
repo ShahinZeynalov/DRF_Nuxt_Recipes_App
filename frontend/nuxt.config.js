@@ -42,7 +42,7 @@ export default {
     // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios', // add this
-    '@nuxtjs/auth-next',
+    // '@nuxtjs/auth-next',
   ],
 
   // add this Axios object
@@ -59,36 +59,31 @@ export default {
     extend (config, ctx) {
     }
   },
-  auth: {
-    strategies: {
-      local: {
-        token: {
-          property: 'token',
-          required: true,
-          type: 'Token'
-        },
-        endpoints: {
-          login: {
-            url: '/login/',
-            method: 'post',
-            propertyName: 'auth_token',
-          },
-          logout: { url: '/logout/', method: 'post' },
-          user: {
-            url: '/user/',
-            method: 'get',
-          },
-        },
-        tokenType: 'Token',
-        tokenName: 'Authorization',
-      },
-
-    },
-    redirect: {
-      login: '/login',
-      home: '/',
-    },
-  },
-
-
+  // auth: {
+  //   strategies: {
+  //     local: {
+  //       token: {
+  //         property: 'token',
+  //         required: true,
+  //         type: 'Token'
+  //       },
+  //       endpoints: {
+  //         login: {
+  //           url: '/login/',
+  //           method: 'post',
+  //           propertyName: 'token',
+  //         },
+  //         logout: { url: '/logout/', method: 'post' },
+  //         user: {
+  //           url: '/user/',
+  //           method: 'get',
+  //         },
+  //       },
+  //       user: {
+  //         property: 'user',
+  //         autoFetch: true
+  //       },
+  //     },
+  //   },
+  // },
 }

@@ -9,7 +9,7 @@
       </div>
         <template v-for="recipe in recipes.results">
           <div :key="recipe.id" class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <recipe-card :onDelete="deleteRecipe" :recipe="recipe"></recipe-card>
+            <recipe-card :recipe="recipe"></recipe-card>
           </div>
         </template>
     </div>
@@ -17,6 +17,7 @@
 </template>
 <script>
 import RecipeCard from "~/components/RecipeCard.vue";
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   head() {
@@ -27,30 +28,47 @@ export default {
   components: {
     RecipeCard
   },
-  async asyncData({ $axios, params }) {
-    try {
-      let recipes = await $axios.$get(`/recipes/`);
-      console.log('-------------', recipes)
-      // this.recipes = { recipes };
-      return { recipes };
-    } catch (e) {
-      return { recipes: [] };
-    }
+  // async asyncData({ $axios, params }) {
+  //   try {
+  //     let recipes = await $axios.$get(`/recipes/`);
+  //     let r = await this.$store.
+  //     console.log('-------------', recipes)
+  //     // this.recipes = { recipes };
+  //     return { recipes };
+  //   } catch (e) {
+  //     return { recipes: [] };
+  //   }
+  // },
+  async fetch (context) {
+    await context.store.dispatch('recipes/fetchRecipes');
   },
   data() {
     return {
-      recipes: []
+      // recipes: []
     };
   },
   methods: {
-    async deleteRecipe(recipe_id) {
-      try {
-        await this.$axios.$delete(`/recipes/${recipe_id}/`); // delete recipe
-        let newRecipes = await this.$axios.$get("/recipes/"); // get new list of recipes
-        this.recipes = newRecipes; // update list of recipes
-      } catch (e) {
-      }
+    // async deleteRecipe(recipe_id) {
+    //   try {
+    //     await this.$axios.$delete(`/recipes/${recipe_id}/`); // delete recipe
+    //     let newRecipes = await this.$axios.$get("/recipes/"); // get new list of recipes
+    //     this.recipes = newRecipes; // update list of recipes
+    //   } catch (e) {
+    //   }
+    // },
+    ...mapActions({
+      deleteRecipe: 'recipes/deleteRecipe',
+    }),
+    deleteRecipeMethod(id) {
+      this.deleteRecipe(id)
+      
+      
     }
+  },
+  computed: {
+    ...mapState({
+      recipes: state => state.recipes.recipes
+    })
   }
 };
 </script>

@@ -54,32 +54,38 @@
   </main>
 </template>
 <script>
+import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   head(){
       return {
         title: "Edit Recipe"
       }
     },
-    async asyncData({ $axios, params }) {
+  async asyncData({ params, store }) {
     try {
-      let recipe = await $axios.$get(`/recipes/${params.id}/`);
-      return { recipe };
+      const id = params.id
+      let recipe = await store.dispatch('recipes/getRecipe', { id });
     } catch (e) {
-      return { recipe: [] };
+      console.log('--------------', e);
     }
   },
   data() {
     return {
-      recipe: {
-        name: "",
-        picture: "",
-        ingredients: "",
-        difficulty: "",
-        prep_time: null,
-        prep_guide: ""
-      },
+      // recipe: {
+      //   name: "",
+      //   picture: "",
+      //   ingredients: "",
+      //   difficulty: "",
+      //   prep_time: null,
+      //   prep_guide: ""
+      // },
       preview: ""
     };
+  },
+  computed: {
+    ...mapState({
+      recipe: state => state.recipes.recipe
+    })
   },
   methods: {
     onFileChange(e) {
@@ -111,7 +117,7 @@ export default {
         formData.append(data, editedRecipe[data]);
       }
       try {
-        let response = await this.$axios.$patch(`/recipes/${editedRecipe.id}/`, formData, config);
+        let response = await this.$store.dispatch('recipes/updateRecipe', { formData, config })
         this.$router.push("/recipes/");
       } catch (e) {
         console.log(e);

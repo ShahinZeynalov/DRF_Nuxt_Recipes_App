@@ -28,31 +28,39 @@
   </main>
 </template>
 <script>
+import { mapActions, mapState, mapGetters } from 'vuex'
+
 export default {
   head() {
     return {
       title: "View Recipe"
     };
   },
-  async asyncData({ $axios, params }) {
+  async asyncData({ params, store }) {
     try {
-      let recipe = await $axios.$get(`/recipes/${params.id}/`);
-      return { recipe };
+      const id = params.id
+      let recipe = await store.dispatch('recipes/getRecipe', { id });
     } catch (e) {
-      return {recipe: [] };
+      console.log('--------------', e);
+      // return {recipe: [] };
     }
   },
   data() {
     return {
-      recipe: {
-        name: "",
-        picture: "",
-        ingredients: "",
-        difficulty: "",
-        prep_time: null,
-        prep_guide: ""
-      }
+      // recipe: {
+      //   name: "",
+      //   picture: "",
+      //   ingredients: "",
+      //   difficulty: "",
+      //   prep_time: null,
+      //   prep_guide: ""
+      // }
     };
+  },
+  computed: {
+    ...mapState({
+      recipe: state => state.recipes.recipe
+    })
   }
 };
 </script>
