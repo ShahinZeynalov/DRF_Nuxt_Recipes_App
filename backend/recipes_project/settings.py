@@ -115,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Baku'
 
 USE_I18N = True
 
@@ -163,9 +163,9 @@ from rest_framework.settings import api_settings
 REST_KNOX = {
   'SECURE_HASH_ALGORITHM': 'cryptography.hazmat.primitives.hashes.SHA512',
   'AUTH_TOKEN_CHARACTER_LENGTH': 64,
-  'TOKEN_TTL': timedelta(hours=10),
+  'TOKEN_TTL': timedelta(minutes=1),
   'USER_SERIALIZER': 'accounts_app.serializers.UserSerializer',
   'TOKEN_LIMIT_PER_USER': None,
-  'AUTO_REFRESH': False,
-  'EXPIRY_DATETIME_FORMAT': "%d-%m-%Y",
+  'AUTO_REFRESH': True,
+#   'EXPIRY_DATETIME_FORMAT': "%d-%m-%Y",
 }

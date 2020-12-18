@@ -19,6 +19,7 @@ class UserAPIView(RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_object(self):
+        print('---', self.request.user)
         return self.request.user
 
 
@@ -35,14 +36,16 @@ class MyLoginView(LoginView):
             return Response({'message': message}, status=409)
         user = serializer.validated_data
         request.user = user
-        token = super().post(request, format).data['token']
+        # token = super().post(request, format).data['token']
+        data = super().post(request, format).data
         response_data = {
             'email': user.email,
             'first_name': user.first_name,
             'last_name': user.last_name,
-            'token': f"Token {token}"
+            'token': f"Token {data['token']}",
+            'expiry': data['expiry']
         }
-        print('-------', response_data)
+        # print('-------', response_data)
         return Response(response_data, status=status.HTTP_200_OK)
 
 
