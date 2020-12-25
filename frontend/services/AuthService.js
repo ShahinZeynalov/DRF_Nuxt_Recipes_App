@@ -10,9 +10,12 @@ const apiClient = axios.create({
 })
 
 export default {
-  login (context) {
-      console.log('----', context);
+  login(context) {
+    console.log('----', context);
     return apiClient.post('login/', context)
   },
-
+  me({ config }) {
+    console.log('------ headers config ', config);
+    return apiClient.get('user/', config)
+  }
 }

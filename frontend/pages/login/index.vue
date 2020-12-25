@@ -124,8 +124,8 @@ export default {
     //   return this.$auth
     //     .loginWith('local', {
     //       data: {
-    //         email: this.email,
-    //         password: this.password
+    //         email: this.formEmail,
+    //         password: this.formPassword
     //       }
     //     })
     //     .catch((e) => {
