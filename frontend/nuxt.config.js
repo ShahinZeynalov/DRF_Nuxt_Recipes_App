@@ -42,7 +42,6 @@ export default {
     // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios', // add this
-    '@nuxtjs/auth-next',
   ],
 
   // add this Axios object
@@ -59,32 +58,4 @@ export default {
     extend (config, ctx) {
     }
   },
-  // auth: {
-  //   strategies: {
-  //     local: {
-  //       token: {
-  //         property: 'token',
-  //         // required: true,
-  //         type: 'Token'
-  //       },
-  //       endpoints: {
-  //         login: {
-  //           url: '/login/',
-  //           method: 'post',
-  //           propertyName: 'data.token',
-  //         },
-  //         logout: { url: '/logout/', method: 'post' },
-  //         user: {
-  //           url: '/user/',
-  //           method: 'get',
-  //           propertyName: false
-  //         },
-  //       },
-  //       user: {
-  //         property: 'user',
-  //         autoFetch: true
-  //       },
-  //     },
-  //   },
-  // },
 }
